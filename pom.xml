@@ -15,5 +15,8 @@
     <properties>
         <maven.compiler.release>21</maven.compiler.release>
     </properties>
+    <modules>
+        <module>catalog-service</module>
+    </modules>
 
 </project>
