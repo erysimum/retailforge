@@ -7,7 +7,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.amitshahi</groupId>
-    <artifactId>spring-boot-microservices</artifactId>
+    <artifactId>retailforge</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <packaging>pom</packaging>
