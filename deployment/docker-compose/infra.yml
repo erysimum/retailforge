@@ -1,0 +1,14 @@
+services:
+  catalog-db:
+    image: postgres:17-alpine
+    ports:
+      - "15432:5432"
+    environment:
+      POSTGRES_USER: retailforge
+      POSTGRES_PASSWORD: retailforge
+      POSTGRES_DB: catalog
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U retailforge -d catalog"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
