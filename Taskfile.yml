@@ -1,0 +1,43 @@
+version: "3"
+
+vars:
+  COMPOSE_FILE: deployment/docker-compose/infra.yml
+
+tasks:
+  default:
+    desc: List all available tasks
+    cmds:
+      - task --list
+    silent: true
+
+  start-infra:
+    desc: Start local Postgres (docker compose)
+    cmds:
+      - docker compose -f {{.COMPOSE_FILE}} up -d
+
+  stop-infra:
+    desc: Stop local Postgres
+    cmds:
+      - docker compose -f {{.COMPOSE_FILE}} down
+
+  restart-infra:
+    desc: Restart local Postgres (wipes the volume)
+    cmds:
+      - docker compose -f {{.COMPOSE_FILE}} down -v
+      - docker compose -f {{.COMPOSE_FILE}} up -d
+
+  format:
+    desc: Apply Spotless formatting
+    cmds:
+      - ./mvnw spotless:apply
+
+  test:
+    desc: Format then run the full build with tests
+    deps: [format]
+    cmds:
+      - ./mvnw clean verify
+
+  run:
+    desc: Run catalog-service locally
+    cmds:
+      - ./mvnw -pl catalog-service spring-boot:run
