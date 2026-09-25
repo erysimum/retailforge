@@ -1,12 +1,11 @@
 package com.amitshahi.retailforge.catalog.products;
 
 import jakarta.persistence.*;
-
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "products")
- class ProductEntity {
+class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -63,5 +62,3 @@ import java.math.BigDecimal;
         this.price = price;
     }
 }
-
-

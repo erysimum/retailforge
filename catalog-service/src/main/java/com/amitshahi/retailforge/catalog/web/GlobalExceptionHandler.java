@@ -10,11 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
     @ExceptionHandler(ProductNotFoundException.class)
     ProblemDetail handleProductNotFound(ProductNotFoundException ex) {
-        ProblemDetail problem =
-                ProblemDetail.forStatusAndDetail(
-                        HttpStatus.NOT_FOUND,
-                        ex.getMessage()
-                );
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
 
         problem.setTitle("Product Not Found");
 

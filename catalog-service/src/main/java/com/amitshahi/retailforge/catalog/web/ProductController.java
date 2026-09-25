@@ -5,7 +5,6 @@ import com.amitshahi.retailforge.catalog.products.Product;
 import com.amitshahi.retailforge.catalog.products.ProductService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 @RestController
 @RequestMapping("/api/products")
 class ProductController {
@@ -16,9 +15,7 @@ class ProductController {
     }
 
     @GetMapping
-    PagedResult<Product> getProducts(
-            @RequestParam( name="page" ,defaultValue = "1") int page
-    ) {
+    PagedResult<Product> getProducts(@RequestParam(name = "page", defaultValue = "1") int page) {
         return productService.getProducts(page);
     }
 

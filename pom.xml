@@ -16,6 +16,7 @@
         <maven.compiler.release>21</maven.compiler.release>
         <rest-assured.version>6.0.1</rest-assured.version>
         <spring-boot.version>4.1.1</spring-boot.version>
+        <spotless.version>3.1.0</spotless.version>
     </properties>
 
     <dependencyManagement>
@@ -37,6 +38,24 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>${spotless.version}</version>
+                <configuration>
+                    <java>
+                        <palantirJavaFormat/>
+                        <importOrder/>
+                        <removeUnusedImports/>
+                    </java>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 
     <modules>
         <module>catalog-service</module>
