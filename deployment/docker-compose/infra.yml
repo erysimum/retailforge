@@ -12,3 +12,20 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+
+  orders-db:
+      image: postgres:17-alpine
+      ports:
+        - "25432:5432"
+      environment:
+        POSTGRES_USER: retailforge
+        POSTGRES_PASSWORD: retailforge
+        POSTGRES_DB: orders
+      healthcheck:
+        test: [ "CMD-SHELL", "pg_isready -U retailforge -d orders" ]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+
+
