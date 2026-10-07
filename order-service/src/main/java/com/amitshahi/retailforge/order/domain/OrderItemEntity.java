@@ -9,15 +9,8 @@ import java.util.Objects;
 public class OrderItemEntity {
 
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "order_item_id_generator"
-    )
-    @SequenceGenerator(
-            name = "order_item_id_generator",
-            sequenceName = "order_item_id_seq",
-            allocationSize = 50
-    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_item_id_generator")
+    @SequenceGenerator(name = "order_item_id_generator", sequenceName = "order_item_id_seq", allocationSize = 50)
     private Long id;
 
     @Column(nullable = false, length = 50)
@@ -40,12 +33,7 @@ public class OrderItemEntity {
         // Required by JPA
     }
 
-    public OrderItemEntity(
-            String code,
-            String name,
-            BigDecimal price,
-            Integer quantity
-    ) {
+    public OrderItemEntity(String code, String name, BigDecimal price, Integer quantity) {
         this.code = Objects.requireNonNull(code);
         this.name = Objects.requireNonNull(name);
         this.price = Objects.requireNonNull(price);

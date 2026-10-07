@@ -6,9 +6,8 @@ import com.amitshahi.retailforge.order.domain.OrderRepository;
 import com.amitshahi.retailforge.order.web.dto.CreateOrderRequest;
 import com.amitshahi.retailforge.order.web.dto.CreateOrderResponse;
 import jakarta.transaction.Transactional;
-import org.springframework.stereotype.Service;
-
 import java.util.UUID;
+import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
@@ -21,11 +20,10 @@ public class OrderService {
 
     public CreateOrderResponse createOrder(String username, CreateOrderRequest request) {
         String orderNumber = generateOrderNumber();
-        OrderEntity order= OrderMapper.toEntity(request, username, orderNumber);
+        OrderEntity order = OrderMapper.toEntity(request, username, orderNumber);
         orderRepository.save(order);
 
         return new CreateOrderResponse(orderNumber);
-
     }
 
     private String generateOrderNumber() {
