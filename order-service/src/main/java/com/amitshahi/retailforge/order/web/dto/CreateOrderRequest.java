@@ -8,8 +8,8 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Set;
 
 public record CreateOrderRequest(
-        @NotEmpty(message = "At least one order item is required") @Valid
-        Set<CreateOrderItemRequest> items,
+        @NotEmpty(message = "At least one order item is required")
+        Set<@Valid CreateOrderItemRequest> items,
 
         @NotNull @Valid Customer customer,
 
