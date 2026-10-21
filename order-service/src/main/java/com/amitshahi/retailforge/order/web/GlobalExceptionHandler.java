@@ -1,5 +1,6 @@
 package com.amitshahi.retailforge.order.web;
 
+import com.amitshahi.retailforge.order.domain.CatalogUnavailableException;
 import com.amitshahi.retailforge.order.domain.InvalidOrderException;
 import java.util.List;
 import org.springframework.http.*;
@@ -31,6 +32,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     ProblemDetail handleInvalidOrder(InvalidOrderException ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
         problem.setTitle("Invalid Order");
+        return problem;
+    }
+
+    @ExceptionHandler(CatalogUnavailableException.class)
+    ProblemDetail handleCatalogUnavailable(CatalogUnavailableException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.SERVICE_UNAVAILABLE, ex.getMessage());
+        problem.setTitle("Service Unavailable");
         return problem;
     }
 }
