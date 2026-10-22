@@ -16,8 +16,8 @@ public class CatalogServiceClient {
         this.catalogRestClient = catalogRestClient;
     }
 
-    @CircuitBreaker(name = "catalog", fallbackMethod = "getProductBySkuFallback")
     @Retry(name = "catalog", fallbackMethod = "getProductBySkuFallback")
+    @CircuitBreaker(name = "catalog")
     public Optional<ProductResponse> getProductBySku(String sku) {
         try {
             ProductResponse product = catalogRestClient
@@ -34,7 +34,6 @@ public class CatalogServiceClient {
     }
 
     Optional<ProductResponse> getProductBySkuFallback(String sku, Throwable throwable) {
-        System.out.println(throwable.getMessage());
         throw new CatalogUnavailableException(
                 "Unable to validate product " + sku + " — catalog service is unavailable");
     }
