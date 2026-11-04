@@ -1,5 +1,9 @@
 package com.amitshahi.retailforge.order.domain;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -21,7 +25,25 @@ public class OrderEventPublisher {
     }
 
     public void publish(OrderEventEntity event) {
+        CorrelationData correlationData = new CorrelationData(event.getEventId());
 
-        rabbitTemplate.convertAndSend(exchange, newOrdersRoutingKey, event.getPayload());
+        rabbitTemplate.convertAndSend(exchange, newOrdersRoutingKey, event.getPayload(), correlationData);
+
+        try {
+            CorrelationData.Confirm confirm = correlationData.getFuture().get(5, TimeUnit.SECONDS);
+
+            if (!confirm.ack()) {
+
+                throw new IllegalStateException(
+                        "RabbitMQ did not ACK event: " + event.getEventId() + ", reason: " + confirm.reason());
+            }
+
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException("Interrupted while waiting for RabbitMQ confirmation", e);
+
+        } catch (ExecutionException | TimeoutException e) {
+            throw new IllegalStateException("Failed to confirm publish", e);
+        }
     }
 }

@@ -28,6 +28,10 @@ public class OrderEventEntity {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PublicationStatus publicationStatus;
+
     protected OrderEventEntity() {
         // Required by JPA
     }
@@ -38,7 +42,12 @@ public class OrderEventEntity {
         this.eventType = Objects.requireNonNull(eventType);
         this.orderNumber = Objects.requireNonNull(orderNumber);
         this.payload = Objects.requireNonNull(payload);
+        this.publicationStatus = PublicationStatus.PENDING;
         this.createdAt = LocalDateTime.now();
+    }
+
+    public void markAsPublished() {
+        this.publicationStatus = PublicationStatus.PUBLISHED;
     }
 
     public String getEventId() {
@@ -59,6 +68,10 @@ public class OrderEventEntity {
 
     public String getPayload() {
         return payload;
+    }
+
+    public PublicationStatus getPublicationStatus() {
+        return publicationStatus;
     }
 
     public LocalDateTime getCreatedAt() {
