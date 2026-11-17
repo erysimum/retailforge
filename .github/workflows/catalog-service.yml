@@ -2,6 +2,8 @@ name: Catalog Service CI
 
 on:
   push:
+    branches:
+      - main
     paths:
       - "catalog-service/**"
       - "pom.xml"

@@ -2,6 +2,8 @@ name: Order Service CI
 
 on:
   push:
+    branches:
+      - main
     paths:
       - "order-service/**"
       - "pom.xml"
