@@ -4,7 +4,15 @@ on:
   push:
     paths:
       - "order-service/**"
+      - "pom.xml"
       - ".github/workflows/order-service.yml"
+
+  pull_request:
+    paths:
+      - "order-service/**"
+      - "pom.xml"
+      - ".github/workflows/order-service.yml"
+
   workflow_dispatch:
 
 jobs:
@@ -29,7 +37,7 @@ jobs:
 
   publish:
     needs: build
-    if: github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: read
