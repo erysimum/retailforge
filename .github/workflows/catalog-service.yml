@@ -4,6 +4,13 @@ on:
   push:
     paths:
       - "catalog-service/**"
+      - "pom.xml"
+      - ".github/workflows/catalog-service.yml"
+
+  pull_request:
+    paths:
+      - "catalog-service/**"
+      - "pom.xml"
       - ".github/workflows/catalog-service.yml"
   workflow_dispatch:
 
@@ -29,7 +36,7 @@ jobs:
 
   publish:
     needs: build
-    if: github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: read
