@@ -45,7 +45,25 @@ services:
       retries: 5
     restart: unless-stopped
 
+
+
+
+  notification-db:
+      image: postgres:17-alpine
+      environment:
+        POSTGRES_DB: notification
+        POSTGRES_USER: retailforge
+        POSTGRES_PASSWORD: retailforge
+      ports:
+        - "45432:5432"
+      volumes:
+        - notification-data:/var/lib/postgresql/data
+      healthcheck:
+        test: [ "CMD-SHELL", "pg_isready -U retailforge -d notification" ]
+        interval: 5s
+        timeout: 5s
+        retries: 5
+
 volumes:
-    rabbitmq-data:
-
-
+  rabbitmq-data:
+  notification-data:
