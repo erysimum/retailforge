@@ -31,11 +31,6 @@ public class OrderEventConsumer {
         idempotentProcessor.runOnce(
                 event.eventId(),
                 "ORDER_CREATED",
-                () -> log.info(
-                        "📧 Sending email to {}: Dear {}, your order {} has been placed!, eventId={}",
-                        event.customerEmail(),
-                        event.customerName(),
-                        event.orderNumber(),
-                        event.eventId()));
+                () -> log.info("📧 Sending email to {}: ... eventId={}", event.customerEmail(), event.eventId()));
     }
 }
