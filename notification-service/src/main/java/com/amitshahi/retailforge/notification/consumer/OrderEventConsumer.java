@@ -1,5 +1,7 @@
 package com.amitshahi.retailforge.notification.consumer;
 
+import com.amitshahi.retailforge.notification.email.EmailMessage;
+import com.amitshahi.retailforge.notification.email.EmailSender;
 import com.amitshahi.retailforge.notification.event.OrderCreatedEvent;
 import com.amitshahi.retailforge.notification.idempotency.IdempotentProcessor;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ public class OrderEventConsumer {
 
     private final JsonMapper jsonMapper;
     private final IdempotentProcessor idempotentProcessor;
+    private final EmailSender emailSender;
 
     @RabbitListener(queues = "${order.events.notification-queue}")
     public void handleOrderCreated(String message) {
@@ -31,6 +34,15 @@ public class OrderEventConsumer {
         idempotentProcessor.runOnce(
                 event.eventId(),
                 "ORDER_CREATED",
-                () -> log.info("📧 Sending email to {}: ... eventId={}", event.customerEmail(), event.eventId()));
+                () -> emailSender.send(new EmailMessage(
+                        event.customerEmail(),
+                        "Your RetailForge order " + event.orderNumber() + " is confirmed",
+                        "Hi " + event.customerName() + ",\n\n"
+                                + "Thanks for your order! "
+                                + "Your order number is "
+                                + event.orderNumber() + ".\n"
+                                + "We'll let you know when it ships.\n\n"
+                                + "— RetailForge",
+                        event.eventId())));
     }
 }
