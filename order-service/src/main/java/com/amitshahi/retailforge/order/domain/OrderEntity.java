@@ -116,7 +116,6 @@ public class OrderEntity {
         item.assignTo(this);
     }
 
-
     public void setComments(String comments) {
         this.comments = comments;
     }
@@ -139,8 +138,7 @@ public class OrderEntity {
 
     private void requireStatus(OrderStatus expected) {
         if (this.status != expected) {
-            throw new IllegalStateException(
-                    "Order " + orderNumber + " is " + status + ", expected " + expected);
+            throw new IllegalStateException("Order " + orderNumber + " is " + status + ", expected " + expected);
         }
     }
 }
