@@ -2,8 +2,6 @@ package com.amitshahi.retailforge.order.domain;
 
 public enum OrderStatus {
     NEW,
-    CONFIRMED,
-    CANCELLED,
-    DELIVERED,
-    ERROR
+    READY_TO_SHIP,
+    CANCELLED
 }

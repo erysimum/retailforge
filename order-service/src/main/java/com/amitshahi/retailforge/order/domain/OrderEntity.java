@@ -116,15 +116,29 @@ public class OrderEntity {
         item.assignTo(this);
     }
 
-    public void setStatus(OrderStatus status) {
-        this.status = Objects.requireNonNull(status);
-    }
-
     public void setComments(String comments) {
         this.comments = comments;
     }
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public void markReadyToShip() {
+        requireStatus(OrderStatus.NEW);
+        this.status = OrderStatus.READY_TO_SHIP;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void cancel() {
+        requireStatus(OrderStatus.NEW);
+        this.status = OrderStatus.CANCELLED;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    private void requireStatus(OrderStatus expected) {
+        if (this.status != expected) {
+            throw new IllegalStateException("Order " + orderNumber + " is " + status + ", expected " + expected);
+        }
     }
 }

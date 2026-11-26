@@ -12,22 +12,16 @@ import org.springframework.stereotype.Component;
 public class OrderEventPublisher {
     private final RabbitTemplate rabbitTemplate;
     private final String exchange;
-    private final String newOrdersRoutingKey;
 
-    public OrderEventPublisher(
-            RabbitTemplate rabbitTemplate,
-            @Value("${order.events.exchange}") String exchange,
-            @Value("${order.events.new-orders-routing-key}") String newOrdersRoutingKey) {
-
+    public OrderEventPublisher(RabbitTemplate rabbitTemplate, @Value("${order.events.exchange}") String exchange) {
         this.rabbitTemplate = rabbitTemplate;
         this.exchange = exchange;
-        this.newOrdersRoutingKey = newOrdersRoutingKey;
     }
 
     public void publish(OrderEventEntity event) {
         CorrelationData correlationData = new CorrelationData(event.getEventId());
 
-        rabbitTemplate.convertAndSend(exchange, newOrdersRoutingKey, event.getPayload(), correlationData);
+        rabbitTemplate.convertAndSend(exchange, event.getEventType().routingKey(), event.getPayload(), correlationData);
 
         try {
             CorrelationData.Confirm confirm = correlationData.getFuture().get(5, TimeUnit.SECONDS);
