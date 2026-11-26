@@ -1,5 +1,6 @@
 package com.amitshahi.retailforge.notification.config;
 
+import com.amitshahi.retailforge.notification.consumer.OrderRoutingKeys;
 import org.springframework.amqp.core.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,13 +28,37 @@ public class RabbitMQConfig {
                 .build();
     }
 
-    @Bean
-    Binding notificationBinding(
-            @Qualifier("notificationQueue") Queue notificationQueue,
-            @Qualifier("orderExchange") DirectExchange orderExchange,
-            @Value("${order.events.new-orders-routing-key}") String routingKey) {
+    //    @Bean
+    //    Binding notificationBinding(
+    //            @Qualifier("notificationQueue") Queue notificationQueue,
+    //            @Qualifier("orderExchange") DirectExchange orderExchange,
+    //            @Value("${order.events.new-orders-routing-key}") String routingKey) {
+    //
+    //        return BindingBuilder.bind(notificationQueue).to(orderExchange).with(routingKey);
+    //    }
 
-        return BindingBuilder.bind(notificationQueue).to(orderExchange).with(routingKey);
+    @Bean
+    Binding orderCreatedBinding(
+            @Qualifier("notificationQueue") Queue notificationQueue,
+            @Qualifier("orderExchange") DirectExchange orderExchange) {
+
+        return BindingBuilder.bind(notificationQueue).to(orderExchange).with(OrderRoutingKeys.ORDER_CREATED);
+    }
+
+    @Bean
+    Binding orderReadyToShipBinding(
+            @Qualifier("notificationQueue") Queue notificationQueue,
+            @Qualifier("orderExchange") DirectExchange orderExchange) {
+
+        return BindingBuilder.bind(notificationQueue).to(orderExchange).with(OrderRoutingKeys.ORDER_READY_TO_SHIP);
+    }
+
+    @Bean
+    Binding orderCancelledBinding(
+            @Qualifier("notificationQueue") Queue notificationQueue,
+            @Qualifier("orderExchange") DirectExchange orderExchange) {
+
+        return BindingBuilder.bind(notificationQueue).to(orderExchange).with(OrderRoutingKeys.ORDER_CANCELLED);
     }
 
     // Dead-letter exchange
